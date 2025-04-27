@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <%- include('links') %>
+    <link rel="stylesheet" href="/styles/login.css" />
+    <title>Sign Up</title>
+  </head>
+  <body>
+    <%- include('navbar') %>
+    <div class="background"></div>
+    <div class="cont">
+      <div class="login-container">
+        <h2><i class="fa-solid fa-lock"></i> Signup</h2>
+        <form id="signup-form" action="/auth/signup" method="post">
+          <input type="text" name="name" placeholder="Name" required />
+          <div class="error-message">
+            <%= error %>
+          </div>
+          <input
+            type="text"
+            name="username"
+            id="username"
+            placeholder="Username"
+            required
+          />
+          <input
+            type="number"
+            name="mobile"
+            id="mobile"
+            placeholder="Mobile Number"
+            required
+          />
+          <input type="email" name="email" placeholder="Email" required />
+          <input
+            type="password"
+            name="password"
+            id="password"
+            placeholder="Enter Password"
+            required
+          />
+          <input type="text" name="address" placeholder="Address" required />
+          <br />
+          <table>
+            <tr>
+              <th>
+                <label for="dob">Date of Birth</label>
+              </th>
+              <td>
+                <div class="date">
+                  <input type="date" name="dob" id="dob" required />
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <span>Gender</span>
+              </th>
+              <td>
+                <label for="male">
+                  <input
+                    id="male"
+                    type="radio"
+                    name="gender"
+                    value="male"
+                    required
+                  />Male
+                </label>
+                &nbsp;
+                <label for="female">
+                  <input
+                    id="female"
+                    type="radio"
+                    name="gender"
+                    value="female"
+                    required
+                  />Female
+                </label>
+              </td>
+            </tr>
+          </table>
+          <br />
+          <input type="submit" value="signup" />
+          <br />
+          <hr />
+          <div class="slink">
+            <a class="Create" href="/auth/login">Already have an account ?</a>
+          </div>
+        </form>
+        <div id="error-message"></div>
+      </div>
+    </div>
+
+    <script>
+      const form = document.getElementById("signup-form");
+      const usernameInput = document.getElementById("username");
+      const mobileInput = document.getElementById("mobile");
+      const passwordInput = document.getElementById("password");
+      const dobInput = document.getElementById("dob");
+      const errorMessage = document.getElementById("error-message");
+
+      form.addEventListener("submit", function (event) {
+        errorMessage.innerHTML = "";
+        let errors = [];
+
+        // Validate name
+        const nameRegex = /^[a-zA-Z\s]+$/;
+        if (!nameRegex.test(form.name.value)) {
+          errors.push({
+            input: form.name,
+            message: "Name should contain only letters and spaces.",
+          });
+        }
+
+        const usernameRegex = /^[a-zA-Z0-9]+$/;
+        if (!usernameRegex.test(usernameInput.value)) {
+          errors.push({
+            input: usernameInput,
+            message: "Username should contain only letters and numbers.",
+          });
+        }
+
+        const mobileRegex = /^\d{10}$/;
+        if (!mobileRegex.test(mobileInput.value)) {
+          errors.push({
+            input: mobileInput,
+            message: "Mobile number should be 10 digits.",
+          });
+        }
+
+        if (passwordInput.value.length < 8) {
+          errors.push({
+            input: passwordInput,
+            message: "Password should be at least 8 characters long.",
+          });
+        }
+
+        const dob = new Date(dobInput.value);
+        const currentDate = new Date();
+        if (dob >= currentDate) {
+          errors.push({
+            input: dobInput,
+            message: "Birthdate should be less than current date.",
+          });
+        }
+
+        if (errors.length > 0) {
+          event.preventDefault();
+          errors.forEach(({ input, message }) => {
+            const errorElement = document.createElement("div");
+            errorElement.classList.add("error-message");
+            errorElement.textContent = message;
+            input.parentNode.insertBefore(errorElement, input);
+          });
+        }
+      });
+    </script>
+  </body>
+</html>

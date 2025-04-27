@@ -1,0 +1,70 @@
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+}
+
+.containers {
+  width: 60%;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  text-align: center;
+  color: #333;
+}
+
+.profile-info {
+  margin-bottom: 20px;
+}
+
+th {
+  width: 200px;
+}
+
+.col {
+  width: fit-content;
+}
+
+td {
+  display: flex;
+  padding: 10px;
+  padding-left: 20px;
+  justify-content: space-between;
+}
+
+td .error-message {
+  color: red;
+}
+
+td input {
+  border: none;
+  padding: 1px;
+}
+
+.sbtn,
+.epage {
+  display: none;
+}
+
+.backBtn {
+  width: 140px;
+  display: none;
+  margin-left: 20px;
+}
+
+.buttons {
+  display: flex;
+}
+
+.button {
+  width: 140px;
+}
+
+.resume {
+  width: fit-content;
+}

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <%- include('links') %>
+    <link rel="stylesheet" href="/styles/profile.css" />
+    <title>Profile</title>
+  </head>
+  <body>
+    <%- include('navbar') %>
+    <div class="containers">
+      <div class="profile-info">
+        <div class="info">
+          <table>
+            <thead>
+              <h1>User Profile</h1>
+            </thead>
+            <tr>
+              <th>Name</th>
+              <th class="col">:</th>
+              <td><%= user.name %></td>
+            </tr>
+            <tr>
+              <th>Username</th>
+              <th class="col">:</th>
+              <td><%= user.username %></td>
+            </tr>
+            <tr>
+              <th>Email</th>
+              <th class="col">:</th>
+              <td><%= user.email %></td>
+            </tr>
+            <tr>
+              <th>Mobile</th>
+              <th class="col">:</th>
+              <td><%= user.mobile %></td>
+            </tr>
+            <tr>
+              <th>Gender</th>
+              <th class="col">:</th>
+
+              <td><%= user.gender %></td>
+            </tr>
+            <tr>
+              <th>Date of Birth</th>
+              <th class="col">:</th>
+              <td><%= new Date(user.dob).toLocaleDateString('en-US') %></td>
+            </tr>
+            <tr>
+              <th>Address</th>
+              <th class="col">:</th>
+              <td><%= user.address %></td>
+            </tr>
+          </table>
+        </div>
+
+        <% if(username === user.username) {%>
+        <form
+          action="/profile/edit"
+          method="post"
+          class="epage"
+          id="profile-form"
+        >
+          <table>
+            <h1>Update Profile</h1>
+            <tr>
+              <th>Name</th>
+              <th class="col">:</th>
+              <td>
+                <input
+                  type="text"
+                  value="<%= user.name %>"
+                  name="name"
+                  id="name"
+                />
+              </td>
+            </tr>
+            <tr>
+              <th>Email</th>
+              <th class="col">:</th>
+              <td>
+                <input
+                  type="email"
+                  value="<%= user.email %>"
+                  name="email"
+                  id="email"
+                />
+              </td>
+            </tr>
+            <tr>
+              <th>Mobile</th>
+              <th class="col">:</th>
+              <td>
+                <input
+                  type="number"
+                  value="<%= user.mobile %>"
+                  name="mobile"
+                  id="mobile"
+                />
+              </td>
+            </tr>
+            <tr>
+              <th>Gender</th>
+              <th class="col">:</th>
+              <td>
+                <div>
+                  <label for="male">
+                    <input id="male" type="radio" name="gender" value="male"
+                    required <% if(user.gender === "male") {%> checked <% } %>
+                    />Male
+                  </label>
+                  &nbsp;
+                  <label for="female">
+                    <input id="female" type="radio" name="gender" value="female"
+                    required <% if(user.gender === "female") {%> checked <% } %>
+                    />Female
+                  </label>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <th>Date of Birth</th>
+              <th class="col">:</th>
+              <td>
+                <input
+                  type="date"
+                  id="dob"
+                  name="dob"
+                  value="<%= new Date(user.dob).toISOString().slice(0, 10) %>"
+                />
+              </td>
+            </tr>
+            <tr>
+              <th>Address</th>
+              <th class="col">:</th>
+              <td>
+                <input type="text" value="<%= user.address %>" name="address" />
+              </td>
+            </tr>
+          </table>
+          <div class="buttons">
+            <button class="btn btn-primary sbtn button" type="submit">
+              Update
+            </button>
+            <button
+              type="button"
+              class="btn btn-danger backBtn"
+              onclick="back()"
+            >
+              cancle
+            </button>
+          </div>
+        </form>
+        <div id="error-message"></div>
+        <% } %>
+      </div>
+      <div class="ebtn">
+        <% if(user.username === username) {%>
+        <button onclick="editProfile()" class="btn btn-primary button">
+          Edit Profile
+        </button>
+        <% } %>
+    </div>
+
+    <script>
+      const editProfile = () => {
+        const data = document.getElementsByClassName("info")[0];
+        const ebtn = document.getElementsByClassName("ebtn")[0];
+        const sbtn = document.getElementsByClassName("sbtn")[0];
+        const epage = document.getElementsByClassName("epage")[0];
+        const backBtn = document.getElementsByClassName("backBtn")[0];
+        data.style.display = "none";
+        ebtn.style.display = "none";
+        sbtn.style.display = "block";
+        epage.style.display = "block";
+        backBtn.style.display = "block";
+      };
+      const back = () => {
+        const data = document.getElementsByClassName("info")[0];
+        const ebtn = document.getElementsByClassName("ebtn")[0];
+        const sbtn = document.getElementsByClassName("sbtn")[0];
+        const epage = document.getElementsByClassName("epage")[0];
+        const backBtn = document.getElementsByClassName("backBtn")[0];
+        data.style.display = "block";
+        ebtn.style.display = "block";
+        sbtn.style.display = "none";
+        epage.style.display = "none";
+        backBtn.style.display = "none";
+      };
+
+      const form = document.getElementById("profile-form");
+      const mobileInput = document.getElementById("mobile");
+      const dobInput = document.getElementById("dob");
+      const errorMessage = document.getElementById("error-message");
+
+      form.addEventListener("submit", function (event) {
+        document.querySelectorAll(".error-message").forEach((element) => {
+          element.remove();
+        });
+
+        errorMessage.innerHTML = "";
+        let errors = [];
+
+        const nameRegex = /^[a-zA-Z\s]+$/;
+        if (!nameRegex.test(form.name.value)) {
+          errors.push({
+            input: form.name,
+            message: "Name should contain only letters and spaces.",
+          });
+        }
+
+        const mobileRegex = /^\d{10}$/;
+        if (!mobileRegex.test(mobileInput.value)) {
+          errors.push({
+            input: mobileInput,
+            message: "Mobile number should be 10 digits.",
+          });
+        }
+
+        const dob = new Date(dobInput.value);
+        const currentDate = new Date();
+        if (dob >= currentDate) {
+          errors.push({
+            input: dobInput,
+            message: "Birthdate should be less than current date.",
+          });
+        }
+
+        if (errors.length > 0) {
+          event.preventDefault();
+          errors.forEach(({ input, message }) => {
+            const errorElement = document.createElement("div");
+            errorElement.classList.add("error-message");
+            errorElement.textContent = message;
+            input.insertAdjacentElement("afterend", errorElement);
+          });
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <%- include('links') %>
+    <link rel="stylesheet" href="/styles/view.css" />
+    <title>Applications</title>
+    <style>
+    </style>
+  </head>
+  <body>
+    <%- include('navbar') %>
+    <div class="container">
+      <h1> Student Progress </h1>
+      <% if (results.length > 0) { %>
+        <table>
+          <thead>
+            <tr>
+              <th>No.</th>
+              <% if(status == "admin") { %>
+                <th>Student Name</th>
+              <% } %>
+              <th>Course Name</th>
+              <th>Quiz Result</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% for (let i = 1; i <= results.length; i++) { %>
+              <tr>
+                <td><%= i %></td>
+                <% if(status == "admin") { %>
+                  <td><%= results[i-1].user.username %></td>
+                <% } %>
+                <td><%= results[i-1].course.name %></td>
+                <td><%= results[i-1].correctAnswers %> / <%= results[i-1].totalQuestions %></td>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>
+      <% } else { %>
+        <div class="form-container">
+          <h2>No results found</h2>
+        </div>
+      <% } %>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,22 @@
+.box {
+  display: flex;
+  width: 100%;
+  padding: 20px 50px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+h1 {
+  font-size: 70px;
+  font-weight: 900;
+}
+
+p {
+  font-size: 30px;
+}
+
+p span a {
+  color: blue;
+  font-weight: 600;
+  text-decoration: none;
+}

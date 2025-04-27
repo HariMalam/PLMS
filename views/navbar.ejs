@@ -1,0 +1,31 @@
+<link rel="stylesheet" href="/styles/navbar.css" />
+
+<div
+  class="navbar <% if(status === "admin" ) { %> navbar-red-gradient <% } %>"
+>
+  <div class="navbar-brand">
+    <a href="/" style="text-decoration: none;">
+      <img src="/img/logo.png" alt="Logo" />
+      <span>Personalize Learning</span>
+    </a>
+
+  </div>
+  <div class="navbar-links" id="navbarLinks">
+    <ul>
+      <% if(status) {%>
+        <li><a href="/">Home</a></li>
+        <li><a href="/program-courses">Courses</a></li>                            
+        <li><a href="/quiz">Quiz</a></li>
+        <li><a href="/progress">Student Progress</a></li>
+      <% }%>
+    </ul>
+  </div>
+  <div class="navbar-logout">
+    <% if(status) {%>
+    <a href="/profile/<%= id %>" class="logout-button">Profile</a>
+    <a href="/auth/logout" class="logout-button">Logout</a>
+    <%} else {%>
+    <a href="/auth/login" class="logout-button">Login</a>
+    <% }%>
+  </div>
+</div>
